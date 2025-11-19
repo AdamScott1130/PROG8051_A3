@@ -1,4 +1,5 @@
-﻿namespace PROG8051_A3_IConnection
+﻿using PROG8051_A3_Account;
+namespace PROG8051_A3_IConnection
 {
     public interface IConnection
     {
@@ -7,7 +8,9 @@
         // Constructors
 
         // Properties
-
+        bool ConnectUser();
+        void DisconnectUser();
+        Account AccountAccess();
         // Methods
 
 

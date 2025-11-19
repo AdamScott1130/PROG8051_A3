@@ -5,12 +5,65 @@ namespace PROG8051_A3_User
     public class User : IConnection
     {
         // Attributes
-        
+        string username;
+        string password;
+        string name;
+        List<Account> accounts;
         // Constructors
-
+        public User(string usernameProvided, string passwordProvided, string nameProvided, List<Account> accountsProvided)
+        {
+            this.username = usernameProvided;
+            this.password = passwordProvided;
+            this.name = nameProvided;
+            this.accounts = accountsProvided;
+        }
         // Properties
-
+        public Account AccountAccess()
+            // Returns Account instance corresponding to the ID entered, null if no matching account
+        {
+            Console.Write("Enter Account ID: ");
+            string acctId = Console.ReadLine();
+            Account accountAccessed = null;
+            foreach (Account acct in accounts)
+            {
+                if (acct.Id.ToString() == acctId)
+                {
+                    accountAccessed = acct;
+                    break;
+                }
+            }
+            return accountAccessed;
+        }
         // Methods
+        public bool ConnectUser()
+        {
+            Console.WriteLine($"Username: {this.username}");
+            Console.Write("Password: ");
+            string pass = Console.ReadLine();
+            if (pass == this.password)
+            {
+                Console.WriteLine($"Connected to the payment gateway. Welcome {this.name}. ");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"Failed to connect user: Incorrect Password.");
+                return true;
+            }
+        }
+
+        public void DisconnectUser()
+        {
+            Console.WriteLine($"Disconnected user {this.name} to the payment gateway.");
+        }
+        public void ViewAccounts()
+        {
+            foreach (Account acct in this.accounts){
+                Console.WriteLine(acct);
+            }
+        }
+
+
 
 
     }
