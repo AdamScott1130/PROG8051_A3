@@ -7,6 +7,8 @@ namespace PROG8051_A3_PaymentGateway
 {
     public class PaymentGateway()
     {
+        
+        
         static void Main()
         {
 

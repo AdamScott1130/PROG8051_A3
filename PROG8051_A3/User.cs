@@ -18,15 +18,13 @@ namespace PROG8051_A3_User
             this.accounts = accountsProvided;
         }
         // Properties
-        public Account AccountAccess()
+        public Account AccountAccess(uint idProvided)
             // Returns Account instance corresponding to the ID entered, null if no matching account
         {
-            Console.Write("Enter Account ID: ");
-            string acctId = Console.ReadLine();
             Account accountAccessed = null;
             foreach (Account acct in accounts)
             {
-                if (acct.Id.ToString() == acctId)
+                if (acct.Id == idProvided)
                 {
                     accountAccessed = acct;
                     break;
@@ -35,12 +33,9 @@ namespace PROG8051_A3_User
             return accountAccessed;
         }
         // Methods
-        public bool ConnectUser()
+        public bool ConnectUser(string passwordProvided)
         {
-            Console.WriteLine($"Username: {this.username}");
-            Console.Write("Password: ");
-            string pass = Console.ReadLine();
-            if (pass == this.password)
+            if (passwordProvided == this.password)
             {
                 Console.WriteLine($"Connected to the payment gateway. Welcome {this.name}. ");
                 return true;
@@ -48,7 +43,7 @@ namespace PROG8051_A3_User
             else
             {
                 Console.WriteLine($"Failed to connect user: Incorrect Password.");
-                return true;
+                return false;
             }
         }
 

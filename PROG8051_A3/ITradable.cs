@@ -2,13 +2,9 @@
 {
     public interface ITradable
     {
-        // Attributes
-
-        // Constructors
-
-        // Properties
-
         // Methods
+        void Buy();
+        void Sell();
 
 
     }
