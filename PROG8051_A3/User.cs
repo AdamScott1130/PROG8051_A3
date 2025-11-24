@@ -5,7 +5,7 @@ namespace PROG8051_A3_User
     public class User : IConnection
     {
         // Attributes
-        string username;
+        public string username;
         string password;
         string name;
         List<Account> accounts;

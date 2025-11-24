@@ -5,18 +5,18 @@ namespace PROG8051_A3_Account
     public abstract class Account : ITradable
     {
         // Attributes
-        private List<User> owners;
+        private List<string> owners;
         bool isShared;
         private uint id;
         // Constructors
-        public Account(List<User> ownersProvided, uint idProvided)
+        public Account(List<String> ownersProvided, uint idProvided)
         {
             this.owners = ownersProvided;
             this.isShared = owners.Count > 1;
             this.id = idProvided;
         }
         // Properties
-        public List<User> Owners { get { return this.owners; } }
+        public List<String> Owners { get { return this.owners; } }
         public string IsShared { get { return isShared ? "This is a shared account." : "This is not a shared account"; } }
         public uint Id { get { return this.id; } }
 
