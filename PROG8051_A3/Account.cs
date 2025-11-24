@@ -8,12 +8,14 @@ namespace PROG8051_A3_Account
         private List<string> owners;
         bool isShared;
         private uint id;
+        string currency;
         // Constructors
-        public Account(List<String> ownersProvided, uint idProvided)
+        public Account(List<String> ownersProvided, uint idProvided, string providedCurrency)
         {
             this.owners = ownersProvided;
             this.isShared = owners.Count > 1;
             this.id = idProvided;
+            this.currency = providedCurrency;
         }
         // Properties
         public List<String> Owners { get { return this.owners; } }
