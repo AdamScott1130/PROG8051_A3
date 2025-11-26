@@ -29,7 +29,7 @@ namespace PROG8051_A3_BankAccount
                 this.balance += amount;
             }
         }
-        public void Transfer(decimal transferAmount, BankAccount toBankAccount)
+        private void Transfer(decimal transferAmount, BankAccount toBankAccount)
         {
             //transfer money to another account
             // deduct from original "from" account, add to the "to" account
@@ -43,7 +43,7 @@ namespace PROG8051_A3_BankAccount
 
         }
 
-        public void Withdraw(decimal amount)
+        private void Withdraw(decimal amount)
         {
             //validation and operation
             if (amount > 0 && balance >= amount)
@@ -54,12 +54,12 @@ namespace PROG8051_A3_BankAccount
 
         public override void Buy(decimal amount, string name = "", string additionalInfo = "")
         {
-            Withdraw(amount);
+            Deposit(amount);
         }
 
         public override void Sell(decimal amount, string name = "")
         {
-            Deposit(amount);
+            Withdraw(amount);
         }
 
         public override List<string> SelectorOptions()

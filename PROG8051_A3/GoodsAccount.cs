@@ -25,7 +25,7 @@ namespace PROG8051_A3_GoodsAccount
         private List<string> selectorOptions = new List<string>(["Check Report", "Buy Goods", "Sell Goods", "Exit"]);
 
         // Constructors
-        public GoodsAccount(List<String> owners, uint accId, string providedCurrency) : base(owners, accId)
+        public GoodsAccount(List<String> owners, uint accId) : base(owners, accId)
         {
             this.goods = new Dictionary<string, GoodsHolding>();
         }

@@ -75,7 +75,11 @@ namespace PROG8051_A3_PaymentGateway
             uint accountFunctionsInput = 0;
             string usernameProvided = "";
             string passwordProvided = "";
+            decimal amountEntered = 0.0m;
+            string nameEntered = "";
+            string additionalInfoEntered = "";
             bool isConnected = false;
+            bool validAmountEntered = false;
             User? currentUser = null;
             Account? currentAccount = null;
             while (input != 2)
@@ -136,17 +140,81 @@ namespace PROG8051_A3_PaymentGateway
                                             else
                                             {
                                                 Console.WriteLine("Account Selected. What would you like to do?");
-                                                Console.Write(CreateOptionSelector(currentAccount.SelectorOptions()));
-                                                accountFunctionsInput = GetUintInput((uint)currentAccount.SelectorOptions().Count);
+                                                while (accountFunctionsInput != 4) 
+                                                {
+                                                    Console.Write(CreateOptionSelector(currentAccount.SelectorOptions()));
+                                                    accountFunctionsInput = GetUintInput((uint)currentAccount.SelectorOptions().Count);
+                                                    switch (accountFunctionsInput)
+                                                    {
+                                                        case 1://Check Report
+                                                            Console.WriteLine(currentAccount.ToString());
+                                                            break;
+                                                        case 2://Buy
+                                                            Console.WriteLine("Enter Amount:");
+                                                            while (validAmountEntered == false)
+                                                            {
+                                                                try
+                                                                {
+                                                                    amountEntered = decimal.Parse(Console.ReadLine());
+                                                                    validAmountEntered = true; // break loop
+                                                                }
+                                                                catch
+                                                                {
+                                                                    Console.WriteLine("Enter a valid amount!");
+                                                                }
+                                                            }
+                                                            validAmountEntered = false; // reset for next input
 
 
+                                                            if (currentAccount is BankAccount)
+                                                            {
+                                                                currentAccount.Buy(amountEntered);
+                                                            }
+                                                            else if (currentAccount is SharesAccount)
+                                                            {
+                                                                Console.WriteLine("Enter Share Name:");
+                                                                nameEntered = Console.ReadLine() ?? string.Empty;
+                                                                currentAccount.Buy(amountEntered, nameEntered);
+                                                            }
+                                                            else if (currentAccount is GoodsAccount)
+                                                            {
+                                                                Console.WriteLine("Enter Goods Name:");
+                                                                nameEntered = Console.ReadLine() ?? string.Empty;
+                                                                Console.WriteLine("Enter Goods Unit (e.g., kg, grams):");
+                                                                additionalInfoEntered = Console.ReadLine() ?? string.Empty;
+                                                                currentAccount.Buy(amountEntered, nameEntered, additionalInfoEntered);
+                                                            }
+                                                            break;
+                                                        case 3://Sell
+                                                            Console.WriteLine("Enter Amount:");
+                                                            while (validAmountEntered == false)
+                                                            {
+                                                                try
+                                                                {
+                                                                    amountEntered = decimal.Parse(Console.ReadLine());
+                                                                    validAmountEntered = true; // break loop
+                                                                }
+                                                                catch
+                                                                {
+                                                                    Console.WriteLine("Enter a valid amount!");
+                                                                }
+                                                            }
+                                                            validAmountEntered = false; // reset for next input
+                                                            if (currentAccount is BankAccount)
+                                                            {
+                                                                currentAccount.Sell(amountEntered);
+                                                            }
+                                                            break;
+                                                        default:
+                                                            break;
+                                                    }
+                                                }
                                             }
                                                 break;
                                         default:
                                             break;
                                     }
                                 }
-
                             }
                         }
                         break;
