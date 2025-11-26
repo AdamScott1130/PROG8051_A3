@@ -5,7 +5,7 @@ namespace PROG8051_A3_User
     public class User : IConnection
     {
         // Attributes
-        public string username;
+        private string username;
         string password;
         string name;
         List<Account> accounts;
@@ -21,7 +21,7 @@ namespace PROG8051_A3_User
         public Account AccountAccess(uint idProvided)
             // Returns Account instance corresponding to the ID entered, null if no matching account
         {
-            Account accountAccessed = null;
+            Account? accountAccessed = null;
             foreach (Account acct in accounts)
             {
                 if (acct.Id == idProvided)
@@ -32,6 +32,12 @@ namespace PROG8051_A3_User
             }
             return accountAccessed;
         }
+
+        public string Username()
+        {
+            return this.username;
+        }
+
         // Methods
         public bool ConnectUser(string passwordProvided)
         {

@@ -3,9 +3,8 @@
     public interface ITradable
     {
         // Methods
-        void Buy(decimal amount);
-        void Sell(decimal amount);
-
+        void Buy(decimal amount, string name = "", string additionalInfo = "");
+        void Sell(decimal amount, string name = "");
 
     }
 }

@@ -8,14 +8,12 @@ namespace PROG8051_A3_Account
         private List<string> owners;
         bool isShared;
         private uint id;
-        string currency;
         // Constructors
-        public Account(List<String> ownersProvided, uint idProvided, string providedCurrency)
+        public Account(List<String> ownersProvided, uint idProvided)
         {
             this.owners = ownersProvided;
             this.isShared = owners.Count > 1;
             this.id = idProvided;
-            this.currency = providedCurrency;
         }
         // Properties
         public List<String> Owners { get { return this.owners; } }
@@ -24,8 +22,10 @@ namespace PROG8051_A3_Account
 
         // Methods
 
-        public abstract void Buy();
-        public abstract void Sell();
+        public abstract void Buy(decimal amount, string name = "", string additionalInfo = "");
+        public abstract void Sell(decimal amount, string name = "");
+
+        public abstract List<string> SelectorOptions();
         public override abstract string ToString();
     }
 }

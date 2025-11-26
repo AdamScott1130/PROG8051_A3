@@ -18,13 +18,14 @@ namespace PROG8051_A3_GoodsAccount
             this.GoodsUnit = unit;
         }
     }
-    internal class GoodsAccount : Account, ITradable
+    public class GoodsAccount : Account, ITradable
     {
         // Attributes
         public Dictionary<string, GoodsHolding> goods;
+        private List<string> selectorOptions = new List<string>(["Check Report", "Buy Goods", "Sell Goods", "Exit"]);
 
         // Constructors
-        public GoodsAccount(List<User> owners, uint accId, string providedCurrency) : base(owners, accId, providedCurrency)
+        public GoodsAccount(List<String> owners, uint accId, string providedCurrency) : base(owners, accId)
         {
             this.goods = new Dictionary<string, GoodsHolding>();
         }
@@ -36,7 +37,7 @@ namespace PROG8051_A3_GoodsAccount
         }
 
         // Methods
-        public void Buy(string goodsName, decimal amount, string additionalInfo)
+        public override void Buy(decimal amount, string goodsName, string additionalInfo)
         {
             // For goods:
             // goodsName = good name
@@ -63,7 +64,7 @@ namespace PROG8051_A3_GoodsAccount
             }
 
         }
-        public void Sell(string itemName, decimal amount)
+        public override void Sell(decimal amount, string itemName = "")
         {
             // No need to cast - goods can have decimal amounts (0.5 kg of gold)
 
@@ -89,6 +90,11 @@ namespace PROG8051_A3_GoodsAccount
             {
                 Console.WriteLine($"Error: You don't own any {itemName}.");
             }
+        }
+
+        public override List<string> SelectorOptions()
+        {
+            return this.selectorOptions;
         }
         public override string ToString()
         {

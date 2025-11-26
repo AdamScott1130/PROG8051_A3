@@ -7,12 +7,11 @@ namespace PROG8051_A3_BankAccount
     {
         // Attributes
         private decimal balance;
-        private string currency;
+        private List<string> selectorOptions = new List<string>(["Check Balance", "Deposit", "Withdraw", "Exit"]);
         // Constructors
-        public BankAccount(List<User> owners, uint accId, string currency) : base(owners, accId, currency)
+        public BankAccount(List<String> owners, uint accId, decimal balanceProvided = 0) : base(owners, accId)
         {
-            this.balance = 0;
-            this.currency = currency;
+            this.balance = balanceProvided;
         }
         // Properties
         public decimal GetBalance
@@ -52,15 +51,32 @@ namespace PROG8051_A3_BankAccount
                 this.balance -= amount;
             }
         }
-        public string GetCurrency()
+
+        public override void Buy(decimal amount, string name = "", string additionalInfo = "")
         {
-            return this.currency;
+            Withdraw(amount);
+        }
+
+        public override void Sell(decimal amount, string name = "")
+        {
+            Deposit(amount);
+        }
+
+        public override List<string> SelectorOptions()
+        {
+            return this.selectorOptions;
         }
 
         public override string ToString()
         {
             //print details based on action like deposit, transfer, withdraw
-            return "The Bank Account details are ";
+            string accountInfo = "Owner(s): ";
+            foreach (string owner in this.Owners)
+            {
+                accountInfo += $"{owner}    ";
+            }
+            accountInfo += $"\nID: {this.Id}\nBalance: {this.balance:C}";
+            return accountInfo;
         }
     }
 }

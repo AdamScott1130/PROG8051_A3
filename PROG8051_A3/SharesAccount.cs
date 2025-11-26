@@ -3,100 +3,104 @@ using PROG8051_A3_ITradable;
 using PROG8051_A3_User;
 namespace PROG8051_A3_SharesAccount
 {
-    public class SharesAccount : Account
+    // helper class 
+    public class ShareHolding
     {
-        // helper class 
-        public class ShareHolding
-        {
-            //Attributes
-            public int SharesAmount;
-            public decimal SharesPercent;
+        //Attributes
+        public int SharesAmount;
+        public decimal SharesPercent;
 
-            //Constructor
-            public ShareHolding(int amount, decimal percent)
+        //Constructor
+        public ShareHolding(int amount, decimal percent)
+        {
+            this.SharesAmount = amount;
+            this.SharesPercent = percent;
+        }
+    }
+    public class SharesAccount : Account, ITradable
+    {
+
+        //Attributes
+        private Dictionary<string, ShareHolding> shares;
+        private List<string> selectorOptions = new List<string>(["Check Report", "Buy Shares", "Sell Shares", "Exit"]);
+
+        // Constructors
+        public SharesAccount(List<String> owners, uint accId, string providedCurrency) : base(owners, accId)
+        {
+            this.shares = new Dictionary<string, ShareHolding>();//creates an empty dictionary, Key = share name, Value = Shareholding Obj (Quantity and percentage)
+        }
+
+        // Properties
+        public Dictionary<string, ShareHolding> Shares
+        {
+            get { return this.shares; }
+        }
+
+        // Methods
+        public override void Buy(decimal amount, string shareName = "", string additionalInfo = "")
+        {
+            // For shares:
+            // shareName = share name
+            // amount = quantity (cast to int)
+            // additionalInfo = percentage (parse as string)
+            int quantity = (int)amount;
+            decimal percentage = decimal.Parse(additionalInfo);
+
+            if (!shares.ContainsKey(shareName))
             {
-                this.SharesAmount = amount;
-                this.SharesPercent = percent;
+                shares[shareName] = new ShareHolding(quantity, percentage);
+            }
+            else
+            {
+                shares[shareName].SharesAmount += quantity;
+                shares[shareName].SharesPercent += percentage;
             }
         }
-        public class SharesAccount : Account, ITradable
+
+        public override void Sell(decimal amount, string shareName)
         {
-            //Attributes
-            private Dictionary<string, ShareHolding> shares;
-
-            // Constructors
-            public SharesAccount(List<User> owners, uint accId, string providedCurrency) : base(owners, accId, providedCurrency)
+            int quantity = (int)amount;
+            if (shares.ContainsKey(shareName))
             {
-                this.shares = new Dictionary<string, ShareHolding>();//creates an empty dictionary, Key = share name, Value = Shareholding Obj (Quantity and percentage)
-            }
-
-            // Properties
-            public Dictionary<string, ShareHolding> Shares
-            {
-                get { return this.shares; }
-            }
-
-            // Methods
-            public void Buy(string shareName, decimal amount, string additionalInfo)
-            {
-                // For shares:
-                // shareName = share name
-                // amount = quantity (cast to int)
-                // additionalInfo = percentage (parse as string)
-                int quantity = (int)amount;
-                decimal percentage = decimal.Parse(additionalInfo);
-
-                if (!shares.ContainsKey(shareName))
+                //check quantity
+                if (shares[shareName].SharesAmount >= 0)
                 {
-                    shares[shareName] = new ShareHolding(quantity, percentage);
+                    // Calculate what percentage of shares we're selling
+                    decimal percentageToSell = shares[shareName].SharesPercent * quantity / shares[shareName].SharesAmount;
+
+                    shares[shareName].SharesAmount -= quantity;
+                    shares[shareName].SharesPercent -= percentageToSell;
+
+                    // If all shares sold, remove from dictionary
+                    if (shares[shareName].SharesAmount == 0)
+                        shares.Remove(shareName);
                 }
                 else
                 {
-                    shares[shareName].SharesAmount += quantity;
-                    shares[shareName].SharesPercent += percentage;
+                    Console.WriteLine($"Error: Cannot sell {quantity} shares. Only {shares[shareName].SharesAmount} available");
                 }
             }
-
-            public void Sell(string shareName, decimal amount)
+            else
             {
-                int quantity = (int)amount;
-                if (shares.ContainsKey(shareName))
-                {
-                    //check quantity
-                    if (shares[shareName].SharesAmount >= 0)
-                    {
-                        // Calculate what percentage of shares we're selling
-                        decimal percentageToSell = shares[shareName].SharesPercent * quantity / shares[shareName].SharesAmount;
-
-                        shares[shareName].SharesAmount -= quantity;
-                        shares[shareName].SharesPercent -= percentageToSell;
-
-                        // If all shares sold, remove from dictionary
-                        if (shares[shareName].SharesAmount == 0)
-                            shares.Remove(shareName);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Error: Cannot sell {quantity} shares. Only {shares[shareName].SharesAmount} available");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"Error: You don't own any {shares[shareName]} shares");
-                }
+                Console.WriteLine($"Error: You don't own any {shares[shareName]} shares");
             }
+        }
 
-            public override string ToString()
+        public override List<string> SelectorOptions()
+        {
+            return this.selectorOptions;
+        }
+
+        public override string ToString()
+        {
+            string result = $"Shares account #{this.Id}\n";
+            result += $"Holdings:\n";
+
+            foreach (var share in shares)
             {
-                string result = $"Shares account #{this.Id}\n";
-                result += $"Holdings:\n";
-
-                foreach (var share in shares)
-                {
-                    result += $"{share.Key}: {share.Value.SharesAmount} shares ({share.Value.SharesPercent}%)\n";
-                }
-                return result;
+                result += $"{share.Key}: {share.Value.SharesAmount} shares ({share.Value.SharesPercent}%)\n";
             }
+            return result;
         }
     }
 }
