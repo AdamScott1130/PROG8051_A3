@@ -4,7 +4,6 @@ using PROG8051_A3_User;
 
 namespace PROG8051_A3_GoodsAccount
 {
-    // helper class 
     public class GoodsHolding
     {
         //Attributes
