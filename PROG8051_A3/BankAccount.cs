@@ -67,6 +67,10 @@ namespace PROG8051_A3_BankAccount
             return this.selectorOptions;
         }
 
+        public decimal Balance()
+        {
+            return this.balance;
+        }
         public override string ToString()
         {
             //print details based on action like deposit, transfer, withdraw
@@ -75,7 +79,7 @@ namespace PROG8051_A3_BankAccount
             {
                 accountInfo += $"{owner}    ";
             }
-            accountInfo += $"\nID: {this.Id}\nBalance: {this.balance:C}";
+            accountInfo += $"\nAccount Type: Bank Account \nID: {this.Id}\nBalance: {this.balance:C}";
             return accountInfo;
         }
     }

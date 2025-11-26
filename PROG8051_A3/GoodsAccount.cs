@@ -98,14 +98,19 @@ namespace PROG8051_A3_GoodsAccount
         }
         public override string ToString()
         {
-            string result = $"Shares account #{this.Id}\n";
-            result += $"Holdings:\n";
+            string accountInfo = "Owner(s): ";
+            foreach (string owner in this.Owners)
+            {
+                accountInfo += $"{owner}    ";
+            }
+
+            accountInfo += $"\nAccount Type: Goods Account\nID: {this.Id}\nHoldings:\n";
 
             foreach (var good in goods)
             {
-                result += $"{good.Key}: {good.Value.GoodsAmount} goods ({good.Value.GoodsUnit}%)\n";
+                accountInfo += $"{good.Key}: {good.Value.GoodsAmount} of {good.Value.GoodsUnit}\n";
             }
-            return result;
+            return accountInfo;
         }
 
     }

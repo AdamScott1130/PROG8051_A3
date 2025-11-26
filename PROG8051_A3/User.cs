@@ -59,8 +59,11 @@ namespace PROG8051_A3_User
         }
         public void ViewAccounts()
         {
+            Console.WriteLine("----------");
             foreach (Account acct in this.accounts){
+
                 Console.WriteLine(acct);
+                Console.WriteLine("----------");
             }
         }
 

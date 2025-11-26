@@ -44,9 +44,12 @@ namespace PROG8051_A3_PaymentGateway
             {
                 List<Account> temp = new List<Account> ();
                 temp.Add(new BankAccount(new List<String>(["User" + i]), i));
+                temp.Add(new GoodsAccount(new List<String>(["User" + i]), 5+i));
+                temp.Add(new SharesAccount(new List<String>(["User" + i]), 10+i));
                 users.Add(new User("User"+i, "Pass"+i, "Firstname Lastname", temp));
-                Console.WriteLine($"Added BankAccount with username {users[(int)i-1].Username()} and password Pass{i}");
+                Console.WriteLine($"Added User with username {users[(int)i-1].Username()} and password Pass{i}");
             }
+
 
             Console.WriteLine("----------");
             return users;
@@ -66,7 +69,6 @@ namespace PROG8051_A3_PaymentGateway
         static void Main()
         {
             List<User> users = CreateListOfUsers();
-
             List<string> userSelectorOptions = new List<string>(["Select User to Connect", "Exit"]);
             List<string> accountSelectorOptions = new List<string>(["View Accounts", "Select Account", "Exit"]);
 
@@ -203,6 +205,18 @@ namespace PROG8051_A3_PaymentGateway
                                                             if (currentAccount is BankAccount)
                                                             {
                                                                 currentAccount.Sell(amountEntered);
+                                                            }
+                                                            else if (currentAccount is SharesAccount)
+                                                            {
+                                                                Console.WriteLine("Enter Share Name:");
+                                                                nameEntered = Console.ReadLine() ?? string.Empty;
+                                                                currentAccount.Sell(amountEntered, nameEntered);
+                                                            }
+                                                            else if (currentAccount is GoodsAccount)
+                                                            {
+                                                                Console.WriteLine("Enter Goods Name:");
+                                                                nameEntered = Console.ReadLine() ?? string.Empty;
+                                                                currentAccount.Sell(amountEntered, nameEntered);
                                                             }
                                                             break;
                                                         default:
